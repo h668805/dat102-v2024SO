@@ -13,7 +13,7 @@ public class HashOrdbok<K, V> implements OrdbokInterface<K, V> {
 	// Hashtabellen
 	private TabellElement<K, V>[] hashTabell;
 	private int tabellStorrelse;
-	private static final double MAK_FYLLINGSGRAD = 0.5;
+	private static final double MAKS_FYLLINGSGRAD = 0.5;
 
 	public HashOrdbok() {
 		this(STANDARD_KAPASITET);
@@ -192,7 +192,7 @@ public class HashOrdbok<K, V> implements OrdbokInterface<K, V> {
 	}
 
 	private boolean erForFull() {
-		return antallElement > MAK_FYLLINGSGRAD * hashTabell.length;
+		return antallElement > MAKS_FYLLINGSGRAD * hashTabell.length;
 	}
 
 	private boolean erPrimtall(int t) {
