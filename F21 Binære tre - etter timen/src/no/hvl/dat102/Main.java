@@ -1,5 +1,6 @@
 package no.hvl.dat102;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Main {
@@ -7,38 +8,53 @@ public class Main {
 		/*
    		Konstruerer eit binært tre som ser slik ut
   
-           5
+           7
           / \
-         1   7 
-  
+         5   1
+         	/
+           0
+        
 	 	*/
-		BinaerTre<Integer> t1 = new BinaerTre<>(1);
-		BinaerTre<Integer> t2 = new BinaerTre<>(7);
-		BinaerTre<Integer> t3 = new BinaerTre<>(5, t1, t2);
-
-		Iterator<Integer> it = t3.getInordenIterator();
-
-		while (it.hasNext()) {
-			System.out.println(it.next());
-		}
-
-		// Lage eit ny tre med t3 som venstre undertre, 17 i rota og eit undertre
-		// med berre ein node som inneheld 20
+		BinaerTre<Integer> t1 = new BinaerTre<>(0);
+		BinaerTre<Integer> t2 = new BinaerTre<>(5);
+		BinaerTre<Integer> t3 = new BinaerTre<>(1, t1, null);
+		BinaerTre<Integer> t4 = new BinaerTre<>(7, t2, t3);
 		
 		/*
-   		Konstruerer eit binært tre som ser slik ut
-   		     17
-            /  \
-           5   20 
-          / \
-         1   7 
-  
-	 	*/
 		
-		System.out.println("Antall nodar: " + t3.getAntall());
-		System.out.println("Høgda: " + t3.getHogde());
-		t3.visPreorden();
-		t3.visInorden();
-		t3.visPostorden();
+		   2
+		  / \
+		 3   8
+		 
+		*/
+		BinaerTre<Integer> t5 = new BinaerTre<>(3);
+		BinaerTre<Integer> t6 = new BinaerTre<>(8);
+		BinaerTre<Integer> t7 = new BinaerTre<>(2, t5, t6);
+		
+		BinaerTre<Integer> t8 = new BinaerTre<>(9, t4, t7);
+
+		t8.visPreorden();
+		t8.visInorden();
+		t8.visPostorden();
+		
+		System.out.println(t8.soek(3));
+		System.out.println(grense(t8, 7));
+		Iterator<Integer> iterator = t8.getPreordenIterator();
+		while (iterator.hasNext()) {
+			System.out.print(iterator.next() + " ");
+		}
+		System.out.println();
+	}
+	
+	private static ArrayList<Integer> grense(BinaerTre<Integer> tre, int i) {
+		ArrayList<Integer> liste = new ArrayList<>();
+		Iterator<Integer> iterator = tre.getInordenIterator();
+		while (iterator.hasNext()) {
+			int e = iterator.next();
+			if (e < i) {
+				liste.add(e);
+			}
+		}
+		return liste;
 	}
 }
