@@ -100,4 +100,24 @@ public class BS_Tre<T extends Comparable<? super T>> extends BinaerTre<T> implem
 
 		throw new UnsupportedOperationException();
 	}
+
+	public void skrivVerdier(T nedre, T ovre) {
+		skrivVerdierRek(rot, nedre, ovre);
+	}
+
+	private void skrivVerdierRek(BinaerTreNode<T> t, T min, T maks) {
+		if (t != null) {
+			int minst = t.getElement().compareTo(min);
+			int storst = t.getElement().compareTo(maks);
+			if (minst >= 0) {
+				skrivVerdierRek(t.getVenstre(), min, maks);
+			}
+			if (minst >= 0 && storst <= 0) {
+				System.out.print(t.getElement() + " ");
+			}
+			if (storst <= 0) {
+				skrivVerdierRek(t.getHogre(), min, maks);
+			}
+		}
+	}
 }

@@ -1,21 +1,29 @@
 package no.hvl.dat102;
 
-public class BinaerTreNode<T>{
-    private T element;    
-    private BinaerTreNode<T> venstre;
-    private BinaerTreNode<T>  hogre;
-    
-    BinaerTreNode (T el) {
-    	element = el;
-    	venstre = null;
-    	hogre   = null;
-    }
-    
-    // Flere konstruktører og objektmetoder
-    
-    public T getElement() {
-    	return element;
-    }
+import java.math.MathContext;
+
+public class BinaerTreNode<T> {
+	private T element;
+	private BinaerTreNode<T> venstre;
+	private BinaerTreNode<T> hogre;
+	private int hogdeU;
+
+	BinaerTreNode(T el) {
+		element = el;
+		venstre = null;
+		hogre = null;
+		hogdeU = 1;
+	}
+
+	// Flere konstruktører og objektmetoder
+
+	public T getElement() {
+		return element;
+	}
+
+	public void setElement(T element) {
+		this.element = element;
+	}
 
 	public BinaerTreNode<T> getVenstre() {
 		return venstre;
@@ -33,19 +41,37 @@ public class BinaerTreNode<T>{
 		this.hogre = hogre;
 	}
 
-	public void setElement(T element) {
-		this.element = element;
+	public int getHogdeU() {
+		return hogdeU;
 	}
-   
+
+	public void setHogdeU(int hogdeU) {
+		this.hogdeU = hogdeU;
+	}
+
 	public boolean harVenstreBarn() {
 		return venstre != null;
 	}
-	
+
 	public boolean harHogreBarn() {
 		return hogre != null;
 	}
-	
+
 	public boolean erLoev() {
 		return (venstre == null) && (hogre == null);
+	}
+
+	public boolean erBalansert() {
+		if (harVenstreBarn() && harHogreBarn()) {
+			return (Math.abs(venstre.hogdeU - hogre.hogdeU) <= 1) ? venstre.erBalansert() && hogre.erBalansert()
+					: false;
+		}
+		if (harVenstreBarn()) {
+			return venstre.hogdeU <= 1 ? venstre.erBalansert() : false;
+		}
+		if (harHogreBarn()) {
+			return hogre.hogdeU <= 1 ? hogre.erBalansert() : false;
+		}
+		return true;
 	}
 }
