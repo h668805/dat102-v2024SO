@@ -60,18 +60,4 @@ public class BinaerTreNode<T> {
 	public boolean erLoev() {
 		return (venstre == null) && (hogre == null);
 	}
-
-	public boolean erBalansert() {
-		if (harVenstreBarn() && harHogreBarn()) {
-			return (Math.abs(venstre.hogdeU - hogre.hogdeU) <= 1) ? venstre.erBalansert() && hogre.erBalansert()
-					: false;
-		}
-		if (harVenstreBarn()) {
-			return venstre.hogdeU <= 1 ? venstre.erBalansert() : false;
-		}
-		if (harHogreBarn()) {
-			return hogre.hogdeU <= 1 ? hogre.erBalansert() : false;
-		}
-		return true;
-	}
 }

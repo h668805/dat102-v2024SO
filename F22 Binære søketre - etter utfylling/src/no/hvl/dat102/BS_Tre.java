@@ -79,6 +79,7 @@ public class BS_Tre<T extends Comparable<? super T>> extends BinaerTre<T> implem
 			} else {
 				BinaerTreNode<T> ny = new BinaerTreNode<>(nyttElement);
 				p.setVenstre(ny);
+				fiksHogdeU(nyttElement, p);
 			}
 		} else {
 			if (p.getHogre() != null) {
@@ -86,10 +87,38 @@ public class BS_Tre<T extends Comparable<? super T>> extends BinaerTre<T> implem
 			} else {
 				// For å vise alternativ til to linjer
 				p.setHogre(new BinaerTreNode<>(nyttElement));
+				fiksHogdeU(nyttElement, p);
 			}
 		}
 
 		return resultat;
+	}
+
+	private void fiksHogdeU(T element, BinaerTreNode<T> p) {
+		if (p == null) {
+			return;
+		}
+
+		int sml = element.compareTo(p.getElement());
+
+		if (sml == 0) {
+			return;
+		} else if (sml < 0) {
+			if (p.harVenstreBarn()) {
+				fiksHogdeU(element, p.getVenstre());
+				if (p.getHogdeU() == p.getVenstre().getHogdeU()) {
+					p.setHogdeU(p.getHogdeU() + 1);
+				}
+			}
+		} else {
+			if (p.harHogreBarn()) {
+				fiksHogdeU(element, p.getHogre());
+				if (p.getHogdeU() == p.getHogre().getHogdeU()) {
+					p.setHogdeU(p.getHogdeU() + 1);
+				}
+			}
+		}
+
 	}
 
 	@Override
@@ -119,5 +148,27 @@ public class BS_Tre<T extends Comparable<? super T>> extends BinaerTre<T> implem
 				skrivVerdierRek(t.getHogre(), min, maks);
 			}
 		}
+	}
+
+	public boolean erBalansert() {
+		return erBalansert(rot);
+	}
+
+	private boolean erBalansert(BinaerTreNode<T> t) {
+		if (t == null) {
+			return true;
+		}
+		if (t.harVenstreBarn() && t.harHogreBarn()) {
+			return (Math.abs(t.getVenstre().getHogdeU() - t.getHogre().getHogdeU()) <= 1)
+					? erBalansert(t.getVenstre()) && erBalansert(t.getHogre())
+					: false;
+		}
+		if (t.harVenstreBarn()) {
+			return t.getVenstre().getHogdeU() <= 1 ? erBalansert(t.getVenstre()) : false;
+		}
+		if (t.harHogreBarn()) {
+			return t.getHogre().getHogdeU() <= 1 ? erBalansert(t.getHogre()) : false;
+		}
+		return true;
 	}
 }
